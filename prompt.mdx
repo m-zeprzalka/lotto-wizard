@@ -1,0 +1,105 @@
+Jesteś ekspertem AI, pełniącym rolę Senior Full-Stack Developera. Twoim zadaniem jest stworzenie kompletnego planu technicznego i wygenerowanie kluczowych fragmentów kodu dla aplikacji MVP. Musisz działać metodycznie i precyzyjnie.
+
+Cel: Wygeneruj plan i kod dla aplikacji MVP o nazwie "LottoWizard". Aplikacja ta analizuje historyczne dane losowań Lotto, aby dostarczać użytkownikom statystyki i generować zestawy liczb na podstawie wybranych algorytmów analitycznych.
+
+Kontekst: Tworzymy solidne MVP, które na starcie będzie korzystać z kilku podstawowych metod analitycznych. Aplikacja ma charakter eksperymentalny i analityczny – nie obiecujemy wygranych, przewidujemy następne rozwiązania losowań, ich wyniki, lecz prezentujemy matematyczne i statystyczne podejście do danych.
+
+1. Stos Technologiczny:
+
+Frontend: Next.js (z TypeScript)
+
+Styling: Tailwind CSS
+
+Komponenty UI: shadcn/ui (Zainstaluj i skonfiguruj podstawowe komponenty, jak Button i Card).
+
+. Źródło Danych:
+
+Pojedynczy, statyczny plik JSON umieszczony w public/data/wyniki_lotto.json.
+
+Ważne: Chociaż plik startowy może zawierać dane tylko z 1,5 roku, cała logika aplikacji musi być napisana tak, by poprawnie obsługiwać archiwum z co najmniej 5 lat (lub więcej).
+
+3. Schemat Danych (Typ Losowanie): Użyj poniższego, ujednoliconego schematu. Zwróć uwagę na format daty YYYY-MM-DD, który ułatwia sortowanie.
+
+JSON
+
+{
+"numerLosowania": 7268,
+"dataLosowania": "2025-10-30",
+"liczbyLotto": [3, 10, 15, 30, 31, 49]
+}
+
+Przykładowa struktura (możemy zastosować lepszą)
+lotto-wizard/
+├── components/
+│ ├── layout/
+│ │ └── Header.tsx
+│ ├── dashboard/
+│ │ ├── FrequencyChart.tsx
+│ │ ├── HotColdPanel.tsx
+│ │ └── NumberGenerator.tsx
+│ └── archive/
+│ └── ResultsTable.tsx
+├── lib/
+│ ├── statystyki.ts # Kluczowa logika algorytmów
+│ └── utils.ts # (Dla shadcn)
+├── pages/
+│ ├── api/
+│ │ └── wyniki.ts
+│ ├── \_app.tsx
+│ ├── index.tsx # Strona główna (Panel Dashboard)
+│ └── archiwum.tsx # Strona z archiwum
+├── public/
+│ └── data/
+│ └── wyniki_lotto.json
+└── styles/
+└── globals.css
+
+    Dalszą część możesz wykonać lepiej, ale oto wstępny przykład:
+
+    Zadanie dla AI: Wygeneruj Plan i Kod
+
+Wykonaj poniższe kroki, aby stworzyć bazę dla MVP "LottoWizard".
+
+Krok 1: Definicja Typów Danych Stwórz plik /types/index.ts i zdefiniuj w nim interfejs Losowanie na podstawie podanego schematu JSON.
+
+Krok 2: Kluczowa Logika Statystyczna (lib/statystyki.ts) Wygeneruj kod dla pliku /lib/statystyki.ts. Plik ten musi eksportować czyste funkcje (pure functions) operujące na tablicy Losowanie[].
+
+Utwórz następujące funkcje:
+
+obliczCzestotliwoscLiczb(wyniki: Losowanie[]):
+
+Zadanie: Oblicza, ile razy każda liczba (1-49) wystąpiła we wszystkich losowaniach.
+
+Wyjście: Zwraca obiekt (mapę) w formacie: { "1": 150, "2": 143, ..., "49": 139 }.
+
+znajdzGoraceIZimne(daneCzestotliwosci: Record<string, number>, ilosc: number):
+
+Zadanie: Pobiera obiekt z funkcji #1 i zwraca ilosc najczęściej (gorące) i ilosc najrzadziej (zimne) losowanych liczb.
+
+Wyjście: Zwraca obiekt: { gorace: number[], zimne: number[] }.
+
+analizujParzysteNieparzyste(wyniki: Losowanie[]):
+
+Zadanie: Analizuje każde losowanie i oblicza, jaki był w nim rozkład liczb parzystych do nieparzystych (np. 3 parzyste, 3 nieparzyste).
+
+Wyjście: Zwraca obiekt pokazujący, ile razy wystąpiła dana kombinacja (np. "3/3", "4/2"). Przykład: { "6/0": 10, "5/1": 50, "4/2": 150, "3/3": 200, "2/4": 140, "1/5": 45, "0/6": 5 }.
+
+analizujSumyLosowan(wyniki: Losowanie[]):
+
+Zadanie: Oblicza sumę 6 liczb dla każdego losowania w zbiorze.
+
+Wyjście: Zwraca obiekt zawierający statystyki: { min: number, max: number, srednia: number, mediana: number } dla wszystkich sum.
+
+Krok 3: API Route (pages/api/wyniki.ts) Wygeneruj kod dla API route, która wczytuje i zwraca zawartość pliku public/data/wyniki_lotto.json. Zadbaj o poprawną obsługę błędów (np. gdy plik nie istnieje).
+
+Krok 4: Architektura Strony Głównej (pages/index.tsx) Opisz (i podaj przykład kodu), w jaki sposób strona index.tsx powinna:
+
+Pobrać dane z /api/wyniki (używając getStaticProps dla najlepszej wydajności).
+
+Przekazać te dane do funkcji z lib/statystyki.ts, aby uzyskać wszystkie niezbędne analizy (częstotliwości, sumy itp.).
+
+Przekazać wyniki analiz jako props do komponentów-dzieci: FrequencyChart, HotColdPanel, NumberGenerator oraz paneli dla "Sumy" i "Parzyste/Nieparzyste".
+
+KONIEC PROMPTU
+
+Wykonaj aplikacje!
