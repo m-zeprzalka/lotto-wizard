@@ -219,7 +219,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const heroPredictions = {
     mieszany: generujMieszany(czestotliwosci),
     gorace: generujNaPodstawieCzestych(czestotliwosci),
-    balans: generujZBalansem(),
+    balans: generujZBalansem(czestotliwosci), // ← Dodano parametr czestotliwosci
   }
 
   return {

@@ -46,8 +46,8 @@ export default function PredictionsHero({
     },
     {
       id: 3,
-      nazwa: "Balans P/N",
-      opis: "3 parzyste + 3 nieparzyste",
+      nazwa: "Balans z Ciepłych",
+      opis: "3 parzyste + 3 nieparzyste z top 20 gorących",
       liczby: balansZestaw,
       ikona: Sparkles,
       badge: "Zbalansowane",
@@ -67,16 +67,16 @@ export default function PredictionsHero({
   }
 
   return (
-    <div className="space-y-8 md:py-12 lg:py-16 xl:py-32">
+    <div className="space-y-6 md:space-y-8 md:py-12 lg:py-16 xl:py-32">
       {/* Hero Header */}
-      <div className="text-center space-y-4">
-        <Badge variant="outline" className="text-sm px-3 py-1">
+      <div className="text-center space-y-3 md:space-y-4 px-4">
+        <Badge variant="outline" className="text-xs md:text-sm px-3 py-1">
           🎯 Rekomendacje LottoWizard
         </Badge>
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
+        <h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight">
           Twoje Predykcje na Następne Losowanie
         </h1>
-        <p className="text-base md:text-lg xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
+        <p className="text-sm md:text-lg xl:text-2xl text-muted-foreground max-w-4xl mx-auto px-2">
           Stałe zestawy liczb przygotowane przez algorytmy analizy statystycznej
         </p>
       </div>
@@ -111,11 +111,11 @@ export default function PredictionsHero({
 
               <CardContent className="space-y-4">
                 {/* Liczby */}
-                <div className="grid grid-cols-6 gap-2">
+                <div className="grid grid-cols-6 gap-1.5 md:gap-2">
                   {prediction.liczby.map((liczba) => (
                     <div
                       key={liczba}
-                      className="aspect-square rounded-full border-2 border-primary bg-background flex items-center justify-center font-bold text-base lg:text-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="aspect-square rounded-full border-2 border-primary bg-background flex items-center justify-center font-bold text-sm md:text-base lg:text-lg hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
                     >
                       {liczba}
                     </div>
@@ -125,18 +125,22 @@ export default function PredictionsHero({
                 {/* Przycisk kopiowania */}
                 <Button
                   onClick={() => handleCopy(prediction.liczby, prediction.id)}
-                  variant={isCopied ? "secondary" : "outline"}
-                  className="w-full"
-                  size="sm"
+                  variant={isCopied ? "default" : "default"}
+                  className={`w-full gap-2 ${
+                    isCopied
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-[#fdc300] hover:bg-[#e5b000] text-gray-900 font-semibold shadow-md hover:shadow-lg"
+                  }`}
+                  size="lg"
                 >
                   {isCopied ? (
                     <>
-                      <Check className="w-4 h-4 mr-2" />
+                      <Check className="w-5 h-5" />
                       Skopiowano!
                     </>
                   ) : (
                     <>
-                      <Copy className="w-4 h-4 mr-2" />
+                      <Copy className="w-5 h-5" />
                       Kopiuj numery
                     </>
                   )}

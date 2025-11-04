@@ -192,30 +192,42 @@ export function generujMieszany(czestotliwosci: CzestotliwoscLiczb): number[] {
 }
 
 /**
- * Algorytm 4: Generuje zestaw z balansem parzystych/nieparzystych
- * Preferuje najbardziej popularny rozkład 3/3
- * @returns Tablica 6 liczb: 3 parzyste, 3 nieparzyste
+ * Algorytm 4: Generuje zestaw zbalansowany - 3 parzyste + 3 nieparzyste z gorących liczb
+ * Łączy strategię temperatur z balansem parzystych/nieparzystych
+ * @param czestotliwosci - Obiekt z częstotliwościami
+ * @returns Tablica 6 liczb: 3 parzyste i 3 nieparzyste z top 20 gorących
  */
-export function generujZBalansem(): number[] {
-  const wynik: number[] = []
+export function generujZBalansem(czestotliwosci: CzestotliwoscLiczb): number[] {
+  // Pobierz top 20 gorących liczb
+  const gorace = znajdzGoraceIZimne(czestotliwosci, 20).gorace
 
-  // Generuj 3 parzyste liczby
-  const parzyste = new Set<number>()
-  while (parzyste.size < 3) {
-    const liczba = (Math.floor(Math.random() * 24) + 1) * 2 // Liczby parzyste: 2, 4, ..., 48
-    if (liczba <= 49) parzyste.add(liczba)
+  // Podziel na parzyste i nieparzyste
+  const goraceparzyste = gorace.filter((l) => l % 2 === 0)
+  const goracenieparzyste = gorace.filter((l) => l % 2 !== 0)
+
+  const wynik = new Set<number>()
+
+  // Wybierz 3 parzyste z gorących
+  while (wynik.size < 3 && goraceparzyste.length > 0) {
+    const losowyIndeks = Math.floor(Math.random() * goraceparzyste.length)
+    wynik.add(goraceparzyste[losowyIndeks])
   }
 
-  // Generuj 3 nieparzyste liczby
-  const nieparzyste = new Set<number>()
-  while (nieparzyste.size < 3) {
-    const liczba = Math.floor(Math.random() * 25) * 2 + 1 // Liczby nieparzyste: 1, 3, ..., 49
-    nieparzyste.add(liczba)
+  // Wybierz 3 nieparzyste z gorących
+  while (wynik.size < 6 && goracenieparzyste.length > 0) {
+    const losowyIndeks = Math.floor(Math.random() * goracenieparzyste.length)
+    wynik.add(goracenieparzyste[losowyIndeks])
   }
 
-  return [...Array.from(parzyste), ...Array.from(nieparzyste)].sort(
-    (a, b) => a - b
-  )
+  // Jeśli nie ma wystarczająco gorących parzystych/nieparzystych, uzupełnij losowo
+  if (wynik.size < 6) {
+    while (wynik.size < 6) {
+      const losowyIndeks = Math.floor(Math.random() * gorace.length)
+      wynik.add(gorace[losowyIndeks])
+    }
+  }
+
+  return Array.from(wynik).sort((a, b) => a - b)
 }
 
 /**
