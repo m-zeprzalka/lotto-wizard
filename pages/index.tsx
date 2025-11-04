@@ -63,6 +63,11 @@ export default function Home({ statystyki, heroPredictions }: HomeProps) {
             />
           </section>
 
+          {/* Generator liczb */}
+          <section>
+            <NumberGenerator czestotliwosci={statystyki.czestotliwosci} />
+          </section>
+
           {/* Statystyki ogólne */}
           <section>
             <div className="grid md:grid-cols-3 gap-6">
@@ -122,11 +127,6 @@ export default function Home({ statystyki, heroPredictions }: HomeProps) {
                 </CardContent>
               </Card>
             </div>
-          </section>
-
-          {/* Generator liczb */}
-          <section>
-            <NumberGenerator czestotliwosci={statystyki.czestotliwosci} />
           </section>
 
           {/* Gorące i zimne liczby */}
